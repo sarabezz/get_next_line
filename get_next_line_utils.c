@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+        */
+/*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:11 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/19 17:12:17 by sarabermude      ###   ########.fr       */
+/*   Updated: 2025/02/20 18:44:12 by sarbermu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ size_t	ft_strlen(char *s)
 
 char	*ft_strchr(char *s, int c)
 {
+	char	ch;
+
+	ch = (char)c;
 	if (!s)
 		return (NULL);
 	while (*s)
 	{
-		if (*s == (char)c)
+		if (*s == c)
 			return (s);
 		s++;
 	}
