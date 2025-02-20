@@ -5,9 +5,9 @@ all:
 	ar rcs $(NAME) get_next_line.o get_next_line_utils.o
 
 clean:
-	rm -f *.o
+	@rm -f *.o
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all

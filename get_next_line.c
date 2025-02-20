@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+        */
+/*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:33 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/19 17:12:24 by sarabermude      ###   ########.fr       */
+/*   Updated: 2025/02/20 18:52:30 by sarbermu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ static char	*read_line(int fd, char *buffer)
 		bytes = read(fd, buf, BUFFER_SIZE);
 		if (bytes <= 0)
 			return (buffer);
+		if (!buffer)
+			buffer = ft_strdup("");
 		b = ft_strjoin(buffer, buf);
+		if (!b)
+            return (NULL);
+		free(buffer);
 		buffer = b;
 	}
 	return (buffer);
@@ -34,6 +39,8 @@ static char	*extract_line(char *buffer)
 	size_t	i;
 	char	*line;
 
+	if (!buffer)
+		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;

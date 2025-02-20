@@ -6,23 +6,23 @@
 /*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:11 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/20 18:44:12 by sarbermu         ###   ########.fr       */
+/*   Updated: 2025/02/20 18:59:15 by sarbermu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen(const char *s)
 {
-	size_t	lenght;
+	size_t	length;
 
-	lenght = 0;
+	length = 0;
 	while (*s)
 	{
-		lenght++;
+		length++;
 		s++;
 	}
-	return (lenght);
+	return (length);
 }
 
 char	*ft_strchr(char *s, int c)
@@ -30,11 +30,9 @@ char	*ft_strchr(char *s, int c)
 	char	ch;
 
 	ch = (char)c;
-	if (!s)
-		return (NULL);
 	while (*s)
 	{
-		if (*s == c)
+		if (*s == ch)
 			return (s);
 		s++;
 	}
@@ -65,11 +63,32 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	char		*d;
 	const char	*s;
 
-	if (!dst && !src)
+	if (!dst || !src)
 		return (NULL);
 	d = (char *)dst;
 	s = (const char *)src;
 	while (n--)
 		*d++ = *s++;
 	return (dst);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	len;
+	char	*cpy;
+	char	*original;
+
+	len = ft_strlen(s) + 1;
+	cpy = (char *)malloc(len);
+	if (cpy == NULL)
+		return (NULL);
+	original = cpy;
+	while (*s)
+	{
+		*cpy = *s;
+		s++;
+		cpy++;
+	}
+	*cpy = '\0';
+	return (original);
 }
