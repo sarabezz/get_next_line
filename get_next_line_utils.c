@@ -6,7 +6,7 @@
 /*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:11 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/20 18:59:15 by sarbermu         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:44:58 by sarbermu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,13 @@ char	*ft_strdup(const char *s)
 {
 	size_t	len;
 	char	*cpy;
-	char	*original;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s) + 1;
 	cpy = (char *)malloc(len);
-	if (cpy == NULL)
+	if (!cpy)
 		return (NULL);
-	original = cpy;
-	while (*s)
-	{
-		*cpy = *s;
-		s++;
-		cpy++;
-	}
-	*cpy = '\0';
-	return (original);
+	ft_memcpy(cpy, s, len);
+	return (cpy);
 }

@@ -6,40 +6,49 @@
 /*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:33 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/20 18:52:30 by sarbermu         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:54:15 by sarbermu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*read_line(int fd, char *buffer)
+static char	*rd(int fd, char *buffer)
 {
 	char	*b;
 	char	buf[BUFFER_SIZE + 1];
-	int		bytes;
+	int		length;
 
-	while (!ft_strchr(buffer, '\n'))
+	if (!buffer)
+		buffer = ft_strdup("");
+	while (1)
 	{
-		bytes = read(fd, buf, BUFFER_SIZE);
-		if (bytes <= 0)
-			return (buffer);
-		if (!buffer)
-			buffer = ft_strdup("");
+		length = read(fd, buf, BUFFER_SIZE);
+		if (length < 0)
+		{
+			free(buffer);
+			return (NULL);
+		}
+		if (length == 0)
+			break ;
+		buf[length] = '\0';
 		b = ft_strjoin(buffer, buf);
 		if (!b)
-            return (NULL);
+		{
+			free(buffer);
+			return (NULL);
+		}
 		free(buffer);
 		buffer = b;
 	}
 	return (buffer);
 }
 
-static char	*extract_line(char *buffer)
+static char	*get_line(char *buffer)
 {
 	size_t	i;
 	char	*line;
 
-	if (!buffer)
+	if (!buffer || !*buffer)
 		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -52,27 +61,24 @@ static char	*extract_line(char *buffer)
 	return (line);
 }
 
-static char	*trim_buffer(char *buffer)
+static char	*separate(char *buffer)
 {
 	char	*new_buffer;
 	size_t	i;
-	size_t	j;
 
+	if (!buffer || !*buffer)
+		return (NULL);
 	i = 0;
-	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	if (!buffer[i])
+	if (!buffer[i] || !buffer[i + 1])
 	{
 		free(buffer);
 		return (NULL);
 	}
-	new_buffer = malloc(ft_strlen(buffer + i + 1) + 1);
+	new_buffer = ft_strdup(buffer + i + 1);
 	if (!new_buffer)
 		return (NULL);
-	while (buffer[++i])
-		new_buffer[j++] = buffer[i];
-	new_buffer[j] = '\0';
 	free(buffer);
 	return (new_buffer);
 }
@@ -84,13 +90,20 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = read_line(fd, buffer);
+	buffer = rd(fd, buffer);
 	if (!buffer || !*buffer)
 	{
 		free(buffer);
+		buffer = NULL;
 		return (NULL);
 	}
-	line = extract_line(buffer);
-	buffer = trim_buffer(buffer);
+	line = get_line(buffer);
+	if (!line)
+	{
+		free(buffer);
+		buffer = NULL;
+		return (NULL);
+	}
+	buffer = separate(buffer);
 	return (line);
 }
