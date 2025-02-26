@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:11 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/25 15:44:58 by sarbermu         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:00:47 by sarabermude      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ char	*ft_strchr(char *s, int c)
 			return (s);
 		s++;
 	}
+	if (ch == '\0')
+		return (s);
 	return (NULL);
 }
 
