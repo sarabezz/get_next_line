@@ -3,18 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sarbermu <sarbermu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sarabermudez <sarabermudez@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:33 by sarabermude       #+#    #+#             */
-/*   Updated: 2025/02/25 17:16:43 by sarbermu         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:28:10 by sarabermude      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*rd(int fd, char *buffer)
+static char	*buffer_comprobation(char *buffer, char *buf, int length)
 {
 	char	*b;
+
+	buf[length] = '\0';
+	b = ft_strjoin(buffer, buf);
+	if (!b)
+	{
+		free(buffer);
+		return (NULL);
+	}
+	free(buffer);
+	return (b);
+}
+
+static char	*rd(int fd, char *buffer)
+{
 	char	buf[BUFFER_SIZE + 1];
 	int		length;
 
@@ -30,15 +44,9 @@ static char	*rd(int fd, char *buffer)
 		}
 		if (length == 0)
 			break ;
-		buf[length] = '\0';
-		b = ft_strjoin(buffer, buf);
-		if (!b)
-		{
-			free(buffer);
+		buffer = buffer_comprobation(buffer, buf, length);
+		if (!buffer)
 			return (NULL);
-		}
-		free(buffer);
-		buffer = b;
 	}
 	return (buffer);
 }
@@ -48,7 +56,7 @@ static char	*get_line(char *buffer)
 	size_t	i;
 	char	*line;
 
-	if (!buffer || !*buffer)
+	if (!buffer)
 		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -66,7 +74,7 @@ static char	*separate(char *buffer)
 	char	*new_buffer;
 	size_t	i;
 
-	if (!buffer || !*buffer)
+	if (!buffer)
 		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
@@ -78,7 +86,10 @@ static char	*separate(char *buffer)
 	}
 	new_buffer = ft_strdup(buffer + i + 1);
 	if (!new_buffer)
+	{
+		free(buffer);
 		return (NULL);
+	}
 	free(buffer);
 	return (new_buffer);
 }
@@ -107,3 +118,70 @@ char	*get_next_line(int fd)
 	buffer = separate(buffer);
 	return (line);
 }
+
+/*
+#include "get_next_line.h"
+#include <fcntl.h>  // Para el uso de open()
+#include <stdio.h>   // Para printf()
+
+int main(void)
+{
+    int fd;
+    char *line;
+
+    fd = open("prueba.txt", O_RDONLY);
+    if (fd == -1)
+    {
+        perror("Error abriendo el archivo");
+        return (1);
+    }
+    while ((line = get_next_line(fd)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+    }
+    close(fd);
+    return (0);
+}
+
+
+int main(void)
+{
+    char *line;
+
+    while ((line = get_next_line(0)) != NULL)
+    {
+        printf("%s", line);
+        free(line);
+	}
+
+    return (0);
+}
+*/
+
+/*
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
+
+SRC = get_next_line.c get_next_line_utils.c
+OBJ = $(SRC:.c=.o)
+NAME = gnl.a
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	ar rcs $(NAME) $(OBJ)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
+*/
