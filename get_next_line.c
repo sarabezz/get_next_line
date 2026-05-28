@@ -18,12 +18,9 @@ static char	*buffer_comprobation(char *buffer, char *buf, int length)
 
 	buf[length] = '\0';
 	b = ft_strjoin(buffer, buf);
+	free(buffer)
 	if (!b)
-	{
-		free(buffer);
 		return (NULL);
-	}
-	free(buffer);
 	return (b);
 }
 
