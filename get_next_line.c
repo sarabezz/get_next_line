@@ -24,7 +24,7 @@ static char	*buffer_comprobation(char *buffer, char *buf, int length)
 	return (b);
 }
 
-static char	*rd(int fd, char *buffer)
+static char	*read_buffer(int fd, char *buffer)
 {
 	char	buf[BUFFER_SIZE + 1];
 	int		length;
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = rd(fd, buffer);
+	buffer = read_buffer(fd, buffer);
 	if (!buffer || !*buffer)
 	{
 		free(buffer);
