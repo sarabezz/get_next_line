@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static char	*buffer_comprobation(char *buffer, char *buf, int length)
+static char	*join_buffer(char *buffer, char *buf, int length)
 {
 	char	*b;
 
@@ -41,7 +41,7 @@ static char	*read_buffer(int fd, char *buffer)
 		}
 		if (length == 0)
 			break ;
-		buffer = buffer_comprobation(buffer, buf, length);
+		buffer = join_buffer(buffer, buf, length);
 		if (!buffer)
 			return (NULL);
 	}
